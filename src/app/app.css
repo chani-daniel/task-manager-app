@@ -1,0 +1,44 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0 16px;
+}
+
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+router-outlet ~ * {
+  flex: 1;
+  overflow: auto;
+}

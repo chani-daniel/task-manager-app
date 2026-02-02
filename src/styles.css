@@ -1,1 +1,80 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  /* TaskTeam Brand Colors */
+  --primary-blue: #1e88e5;
+  --primary-blue-dark: #1565c0;
+  --secondary-orange: #ff9800;
+  --accent-gray: #757575;
+  --light-gray: #f5f5f5;
+  --white: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  direction: rtl;
+  background-color: var(--light-gray);
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Material Theme Customization */
+.mat-toolbar.mat-primary {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.mat-button.mat-primary {
+  color: var(--primary-blue);
+}
+
+.mat-button.mat-primary:hover {
+  background-color: rgba(30, 136, 229, 0.08);
+}
+
+.mat-raised-button.mat-primary {
+  background-color: var(--primary-blue);
+}
+
+.mat-raised-button.mat-primary:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+/* Card Styling */
+.mat-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Fields */
+.mat-form-field {
+  width: 100%;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue-dark);
+}

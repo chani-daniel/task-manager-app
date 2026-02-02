@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>
+  <mat-icon>edit</mat-icon>
+  עריכת משימה
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="taskForm" class="task-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>כותרת המשימה</mat-label>
+      <input matInput formControlName="title" placeholder="הזן כותרת למשימה" />
+      @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+        <mat-error>{{ getErrorMessage('title') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>תיאור</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="4"
+        placeholder="תאר את המשימה בקצרה"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>סטטוס</mat-label>
+        <mat-select formControlName="status">
+          @for (option of statusOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>עדיפות</mat-label>
+        <mat-select formControlName="priority">
+          @for (option of priorityOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+        @if (taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched) {
+          <mat-error>{{ getErrorMessage('priority') }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>משויך ל- (User ID)</mat-label>
+        <input matInput formControlName="assignedTo" type="number" placeholder="ID משתמש" />
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">ביטול</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="taskForm.invalid">
+    <mat-icon>save</mat-icon>
+    שמור שינויים
+  </button>
+</mat-dialog-actions>

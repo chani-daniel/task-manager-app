@@ -1,0 +1,39 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>add_circle</mat-icon>
+    צור צוות חדש
+  </h2>
+
+  <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <!-- Team Name Field -->
+      <mat-form-field class="full-width">
+        <mat-label>שם הצוות</mat-label>
+        <input matInput formControlName="name" placeholder="לדוגמה: Development Team" />
+        @if (teamForm.get('name')?.invalid && teamForm.get('name')?.touched) {
+          <mat-error>{{ getErrorMessage('name') }}</mat-error>
+        }
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+        ביטול
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="teamForm.invalid || isSubmitting"
+      >
+        @if (isSubmitting) {
+          <mat-progress-bar mode="indeterminate" class="button-progress"></mat-progress-bar>
+          <span>יוצר...</span>
+        } @else {
+          <mat-icon>add</mat-icon>
+          <span>צור צוות</span>
+        }
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

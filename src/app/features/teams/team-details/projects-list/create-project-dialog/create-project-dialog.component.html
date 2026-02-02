@@ -1,0 +1,37 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>create_new_folder</mat-icon>
+    פרויקט חדש
+  </h2>
+
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <!-- Project Name Field -->
+      <mat-form-field class="full-width">
+        <mat-label>שם הפרויקט</mat-label>
+        <input matInput formControlName="name" placeholder="לדוגמה: Website Redesign" />
+        @if (projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+          <mat-error>{{ getErrorMessage('name') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Project Description Field -->
+      <mat-form-field class="full-width">
+        <mat-label>תיאור (אופציונלי)</mat-label>
+        <textarea matInput formControlName="description" placeholder="תיאור הפרויקט" rows="3"></textarea>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()" [disabled]="isSubmitting" type="button">ביטול</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="projectForm.invalid || isSubmitting">
+        @if (isSubmitting) {
+          <mat-progress-bar mode="indeterminate" class="button-progress"></mat-progress-bar>
+          <span>יוצר...</span>
+        } @else {
+          <span>צור פרויקט</span>
+        }
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

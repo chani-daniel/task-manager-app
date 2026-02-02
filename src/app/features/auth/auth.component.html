@@ -1,0 +1,102 @@
+<mat-card class="auth-container">
+  <mat-card-header>
+    <div class="logo-header">
+      <img src="/logo.png" alt="TaskTeam Logo">
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    <mat-tab-group>
+      <mat-tab label="התחברות">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+          <mat-form-field class="full-width">
+            <mat-label>אימייל</mat-label>
+            <input matInput type="email" formControlName="email" />
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <mat-error>{{ getErrorMessage('email', 'login') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>סיסמה</mat-label>
+            <input matInput type="password" formControlName="password" />
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <mat-error>{{ getErrorMessage('password', 'login') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width"
+            [disabled]="isLoading() || loginForm.invalid"
+          >
+            @if (isLoading()) {
+              <span>מחכה...</span>
+            } @else {
+              <span>התחברות</span>
+            }
+          </button>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="הרשמה">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
+          <mat-form-field class="full-width">
+            <mat-label>שם מלא</mat-label>
+            <input matInput type="text" formControlName="name" />
+            @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+              <mat-error>{{ getErrorMessage('name', 'register') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>אימייל</mat-label>
+            <input matInput type="email" formControlName="email" />
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+              <mat-error>{{ getErrorMessage('email', 'register') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>סיסמה</mat-label>
+            <input matInput type="password" formControlName="password" />
+            @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+              <mat-error>{{ getErrorMessage('password', 'register') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>אישור סיסמה</mat-label>
+            <input matInput type="password" formControlName="confirmPassword" />
+            @if (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) {
+              <mat-error>{{ getErrorMessage('confirmPassword', 'register') }}</mat-error>
+            }
+          </mat-form-field>
+
+          @if (registerForm.errors?.['passwordMismatch'] && registerForm.touched) {
+            <div class="error-message">הסיסמאות לא תואמות</div>
+          }
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width"
+            [disabled]="isLoading() || registerForm.invalid"
+          >
+            @if (isLoading()) {
+              <span>מחכה...</span>
+            } @else {
+              <span>הרשמה</span>
+            }
+          </button>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

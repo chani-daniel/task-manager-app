@@ -1,0 +1,56 @@
+.dialog-container {
+  min-width: 300px;
+}
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-blue);
+}
+
+.dialog-title mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  display: block;
+}
+
+textarea {
+  font-family: inherit;
+  resize: vertical;
+}
+
+mat-dialog-actions {
+  padding: 16px 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+button[type='submit'] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

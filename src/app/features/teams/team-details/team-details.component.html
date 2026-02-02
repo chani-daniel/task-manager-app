@@ -1,0 +1,54 @@
+<div class="team-details-container">
+  @if (team()) {
+    <!-- Header with back button and team info -->
+    <mat-toolbar class="team-header">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="team-title">{{ team()!.name }}</h1>
+      <span class="spacer"></span>
+      <button mat-raised-button color="primary" (click)="openAddMemberDialog()">
+        <mat-icon>person_add</mat-icon>
+        הוסף חבר
+      </button>
+    </mat-toolbar>
+
+    <!-- Loading progress bar -->
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    <!-- Tabs for Projects and Members -->
+    <mat-tab-group class="tabs-container">
+      <!-- Projects Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">folder_open</mat-icon>
+          <span>פרויקטים</span>
+        </ng-template>
+
+        @if (team()) {
+          <app-projects-list [teamId]="team()!.id" [projects]="projects()" [isLoading]="isLoading()">
+          </app-projects-list>
+        }
+      </mat-tab>
+
+      <!-- Members Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">people</mat-icon>
+          <span>חברים</span>
+        </ng-template>
+
+        @if (team()) {
+          <app-members-list [teamId]="team()!.id" [team]="team()!"></app-members-list>
+        }
+      </mat-tab>
+    </mat-tab-group>
+  } @else {
+    <div class="empty-state">
+      <mat-icon>info</mat-icon>
+      <p>צוות לא נמצא</p>
+    </div>
+  }
+</div>

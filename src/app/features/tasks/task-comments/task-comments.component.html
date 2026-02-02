@@ -1,0 +1,72 @@
+<mat-card class="comments-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>comment</mat-icon>
+      תגובות
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (isLoading()) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>טוען תגובות...</p>
+      </div>
+    }
+
+    @if (!isLoading() && comments().length > 0) {
+      <mat-list class="comments-list">
+        @for (comment of comments(); track comment.id) {
+          <mat-list-item class="comment-item">
+            <div class="comment-content">
+              <div class="comment-header">
+                <span class="author-name">{{ comment.author_name || 'משתמש' }}</span>
+                <span class="comment-date">{{ formatDate(comment.created_at) }}</span>
+              </div>
+              <p class="comment-body">{{ comment.body }}</p>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        }
+      </mat-list>
+    }
+
+    @if (!isLoading() && comments().length === 0) {
+      <div class="empty-state">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        <p>אין תגובות למשימה זו</p>
+        <p class="hint">היה הראשון להגיב!</p>
+      </div>
+    }
+
+    <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
+      <mat-form-field appearance="fill" class="full-width">
+        <textarea
+          matInput
+          formControlName="body"
+          rows="3"
+          placeholder="כתוב את תגובתך כאן..."
+        ></textarea>
+        @if (commentForm.get('body')?.invalid && commentForm.get('body')?.touched) {
+          <mat-error>נא להזין תגובה</mat-error>
+        }
+      </mat-form-field>
+      
+      <div class="form-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="commentForm.invalid || isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <mat-icon>send</mat-icon>
+            <span>שלח תגובה</span>
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,219 @@
+<div class="tasks-container">
+  <!-- Header -->
+  <mat-toolbar class="tasks-header">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">
+      @if (project()) {
+        {{ project()!.name }} - לוח משימות
+      } @else {
+        לוח משימות
+      }
+    </h1>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" (click)="openCreateTaskDialog()">
+      <mat-icon>add</mat-icon>
+      משימה חדשה
+    </button>
+  </mat-toolbar>
+
+  <!-- Loading progress -->
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  <div class="kanban-board">
+    <!-- Backlog Column -->
+    <div class="kanban-column backlog-column">
+      <div class="column-header">
+        <mat-icon>inbox</mat-icon>
+        <h2>ממתין</h2>
+        <span class="task-count">{{ tasksByStatus().backlog.length }}</span>
+      </div>
+      <div class="column-content">
+        @for (task of tasksByStatus().backlog; track task.id) {
+          <mat-card class="task-card">
+            <mat-card-header>
+              <mat-card-title>{{ task.title }}</mat-card-title>
+              <button mat-icon-button [matMenuTriggerFor]="menu" class="task-menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openCommentsDialog(task)">
+                  <mat-icon>comment</mat-icon>
+                  <span>תגובות</span>
+                </button>
+                <button mat-menu-item (click)="openEditTaskDialog(task)">
+                  <mat-icon>edit</mat-icon>
+                  <span>ערוך</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'In Progress')">
+                  <mat-icon>play_arrow</mat-icon>
+                  <span>העבר לבעבודה</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'Done')">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>סמן כהושלם</span>
+                </button>
+                <button mat-menu-item (click)="deleteTask(task)" class="delete-option">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>מחק</span>
+                </button>
+              </mat-menu>
+            </mat-card-header>
+            <mat-card-content>
+              @if (task.description) {
+                <p class="task-description">{{ task.description }}</p>
+              }
+              <div class="task-meta">
+                <mat-chip [color]="getPriorityColor(task.priority)" selected>
+                  {{ getPriorityText(task.priority) }}
+                </mat-chip>
+                @if (task.dueDate) {
+                  <span class="due-date">
+                    <mat-icon>event</mat-icon>
+                    {{ task.dueDate | date: 'dd/MM/yyyy' }}
+                  </span>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+        } @empty {
+          <div class="empty-column">
+            <mat-icon>inbox</mat-icon>
+            <p>אין משימות ממתינות</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- In Progress Column -->
+    <div class="kanban-column in-progress-column">
+      <div class="column-header">
+        <mat-icon>pending</mat-icon>
+        <h2>בעבודה</h2>
+        <span class="task-count">{{ tasksByStatus().inProgress.length }}</span>
+      </div>
+      <div class="column-content">
+        @for (task of tasksByStatus().inProgress; track task.id) {
+          <mat-card class="task-card">
+            <mat-card-header>
+              <mat-card-title>{{ task.title }}</mat-card-title>
+              <button mat-icon-button [matMenuTriggerFor]="menu" class="task-menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openCommentsDialog(task)">
+                  <mat-icon>comment</mat-icon>
+                  <span>תגובות</span>
+                </button>
+                <button mat-menu-item (click)="openEditTaskDialog(task)">
+                  <mat-icon>edit</mat-icon>
+                  <span>ערוך</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'Backlog')">
+                  <mat-icon>arrow_back</mat-icon>
+                  <span>החזר לממתינים</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'Done')">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>סמן כהושלם</span>
+                </button>
+                <button mat-menu-item (click)="deleteTask(task)" class="delete-option">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>מחק</span>
+                </button>
+              </mat-menu>
+            </mat-card-header>
+            <mat-card-content>
+              @if (task.description) {
+                <p class="task-description">{{ task.description }}</p>
+              }
+              <div class="task-meta">
+                <mat-chip [color]="getPriorityColor(task.priority)" selected>
+                  {{ getPriorityText(task.priority) }}
+                </mat-chip>
+                @if (task.dueDate) {
+                  <span class="due-date">
+                    <mat-icon>event</mat-icon>
+                    {{ task.dueDate | date: 'dd/MM/yyyy' }}
+                  </span>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+        } @empty {
+          <div class="empty-column">
+            <mat-icon>pending</mat-icon>
+            <p>אין משימות בעבודה</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Done Column -->
+    <div class="kanban-column done-column">
+      <div class="column-header">
+        <mat-icon>check_circle</mat-icon>
+        <h2>הושלם</h2>
+        <span class="task-count">{{ tasksByStatus().done.length }}</span>
+      </div>
+      <div class="column-content">
+        @for (task of tasksByStatus().done; track task.id) {
+          <mat-card class="task-card completed">
+            <mat-card-header>
+              <mat-card-title>{{ task.title }}</mat-card-title>
+              <button mat-icon-button [matMenuTriggerFor]="menu" class="task-menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openCommentsDialog(task)">
+                  <mat-icon>comment</mat-icon>
+                  <span>תגובות</span>
+                </button>
+                <button mat-menu-item (click)="openEditTaskDialog(task)">
+                  <mat-icon>edit</mat-icon>
+                  <span>ערוך</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'Backlog')">
+                  <mat-icon>arrow_back</mat-icon>
+                  <span>החזר לממתינים</span>
+                </button>
+                <button mat-menu-item (click)="updateTaskStatus(task, 'In Progress')">
+                  <mat-icon>play_arrow</mat-icon>
+                  <span>החזר לבעבודה</span>
+                </button>
+                <button mat-menu-item (click)="deleteTask(task)" class="delete-option">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>מחק</span>
+                </button>
+              </mat-menu>
+            </mat-card-header>
+            <mat-card-content>
+              @if (task.description) {
+                <p class="task-description">{{ task.description }}</p>
+              }
+              <div class="task-meta">
+                <mat-chip [color]="getPriorityColor(task.priority)" selected>
+                  {{ getPriorityText(task.priority) }}
+                </mat-chip>
+                @if (task.dueDate) {
+                  <span class="due-date">
+                    <mat-icon>event</mat-icon>
+                    {{ task.dueDate | date: 'dd/MM/yyyy' }}
+                  </span>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+        } @empty {
+          <div class="empty-column">
+            <mat-icon>check_circle</mat-icon>
+            <p>אין משימות שהושלמו</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

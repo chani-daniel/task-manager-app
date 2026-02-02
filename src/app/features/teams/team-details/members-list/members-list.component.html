@@ -1,0 +1,24 @@
+<div class="members-container">
+  @if (team) {
+    <div class="members-info">
+      <div class="members-icon-wrapper">
+        <mat-icon class="large-icon">people</mat-icon>
+      </div>
+      
+      <div class="members-content">
+        <h2 class="members-count">{{ team.memberCount || 0 }}</h2>
+        <p class="members-text">
+          @if (team.memberCount === 1) {
+            חבר אחד בצוות שלנו
+          } @else if (team.memberCount === 2) {
+            2 חברים בצוות שלנו
+          } @else if (team.memberCount && team.memberCount > 2) {
+            {{ team.memberCount }} חברים כבר בצוות שלנו
+          } @else {
+            אין חברים בצוות זה עדיין
+          }
+        </p>
+      </div>
+    </div>
+  }
+</div>

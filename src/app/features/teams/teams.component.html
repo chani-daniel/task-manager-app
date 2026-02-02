@@ -1,0 +1,82 @@
+<div class="teams-container">
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <mat-icon class="error-icon">error</mat-icon>
+        <p>{{ error() }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Header -->
+  <div class="teams-header">
+    <h1>צוותים שלי</h1>
+    <button mat-raised-button color="primary" (click)="openCreateTeamDialog()">
+      <mat-icon>add</mat-icon>
+      צור צוות חדש
+    </button>
+  </div>
+
+  <!-- Teams Grid -->
+  @if (teams().length > 0) {
+    <div class="teams-grid">
+      @for (team of teams(); track team.id) {
+        <mat-card class="team-card" (click)="viewTeamProjects(team)" style="cursor: pointer;">
+          <mat-card-header>
+            <div class="team-icon">
+              <mat-icon>group</mat-icon>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-card-title>{{ team.name }}</mat-card-title>
+            <div class="team-meta">
+              <span class="member-count">
+                <mat-icon>people</mat-icon>
+                {{ team.memberCount }} חברים
+              </span>
+            </div>
+          </mat-card-content>
+          <mat-card-actions (click)="$event.stopPropagation()">
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="viewTeamProjects(team)"
+            >
+              <mat-icon>folder_open</mat-icon>
+              צפה בפרויקטים
+            </button>
+            <button
+              mat-stroked-button
+              color="accent"
+              (click)="openAddMemberDialog(team)"
+            >
+              <mat-icon>person_add</mat-icon>
+              הוסף חבר
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  } @else {
+    <!-- Empty State -->
+    <mat-card class="empty-state">
+      <mat-card-content>
+        <mat-icon class="empty-icon">groups</mat-icon>
+        <h2>אין לך צוותים עדיין</h2>
+        <p>בואו ننצור צוות ראשון!</p>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openCreateTeamDialog()"
+        >
+          <mat-icon>add</mat-icon>
+          צור צוות חדש
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

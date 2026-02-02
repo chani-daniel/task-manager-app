@@ -1,0 +1,39 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>person_add</mat-icon>
+    הוסף חבר לצוות
+  </h2>
+
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <!-- Member User ID Field -->
+      <mat-form-field class="full-width">
+        <mat-label>ID המשתמש</mat-label>
+        <input matInput formControlName="userId" placeholder="לדוגמה: 123" type="number" />
+        @if (memberForm.get('userId')?.invalid && memberForm.get('userId')?.touched) {
+          <mat-error>{{ getErrorMessage('userId') }}</mat-error>
+        }
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+        ביטול
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="memberForm.invalid || isSubmitting"
+      >
+        @if (isSubmitting) {
+          <mat-progress-bar mode="indeterminate" class="button-progress"></mat-progress-bar>
+          <span>מוסיף...</span>
+        } @else {
+          <mat-icon>add</mat-icon>
+          <span>הוסף חבר</span>
+        }
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
