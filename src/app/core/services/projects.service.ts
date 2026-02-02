@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { signal, computed } from '@angular/core';
 import { Project, CreateProjectRequest } from '../models/project.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectsService {
-  private readonly apiUrl = 'http://localhost:3000/api/projects';
+  private readonly apiUrl = `${environment.apiUrl}/projects`;
 
   private projectsSignal = signal<Project[]>([]);
   private loadingSignal = signal(false);

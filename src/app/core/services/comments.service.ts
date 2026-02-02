@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { signal, computed } from '@angular/core';
 import { Comment, CreateCommentRequest } from '../models/comment.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentsService {
-  private readonly apiUrl = 'http://localhost:3000/api/comments';
+  private readonly apiUrl = `${environment.apiUrl}/comments`;
 
   private commentsSignal = signal<Comment[]>([]);
   private loadingSignal = signal(false);

@@ -2,8 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { signal, computed } from '@angular/core';
 import { LoginRequest, RegisterRequest, AuthResponse, User } from '../models/auth.model';
+import { environment } from '../../../environments/environment';
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = `${environment.apiUrl}/auth`;
 
 @Injectable({
   providedIn: 'root'

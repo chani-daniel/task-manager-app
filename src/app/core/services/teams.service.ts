@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { signal, computed } from '@angular/core';
 import { Team, CreateTeamRequest } from '../models/team.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamsService {
-  private readonly apiUrl = 'http://localhost:3000/api/teams';
+  private readonly apiUrl = `${environment.apiUrl}/teams`;
 
   private teamsSignal = signal<Team[]>([]);
   private loadingSignal = signal(false);
